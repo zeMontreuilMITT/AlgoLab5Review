@@ -1,15 +1,26 @@
 ﻿// prompt user for adding songs to playlist
 
 bool runApp = true;
+int nowPlayingIndex = -1;
 int nextSongIndex = 0;
-int nowPlayingIndex = 0;
 Queue<string> songQueue = new Queue<string>();
 
 while (runApp)
 {
-    if(songQueue.Count > 0)
+    // song1 0 
+    // song2 1
+    // count = 2
+    // nowPlaying = 0
+    // next = 1
+    
+    if(nowPlayingIndex < songQueue.Count && nowPlayingIndex >= 0)
     {
-        Console.WriteLine($"Next song '{songQueue.ElementAtOrDefault(nextSongIndex)}");
+        Console.WriteLine($"Now Playing '{songQueue.ElementAtOrDefault(nowPlayingIndex)}");
+    }
+
+    if (nextSongIndex < songQueue.Count)
+    {
+        Console.WriteLine($"Next Song: {songQueue.ElementAtOrDefault(nextSongIndex)}");
     }
 
     // Display Main menu
@@ -24,7 +35,7 @@ while (runApp)
         switch (userInputNumber)
         {
             case 1:
-                // add song
+                // add new song
                 string newTitle = "";
 
                 while (String.IsNullOrEmpty(newTitle))
@@ -35,6 +46,23 @@ while (runApp)
 
                 songQueue = AddSongToQueue(newTitle, songQueue);
 
+                break;
+            case 2: 
+                // play next song in playlist
+                if (songQueue.Count > 0)
+                {
+                    nowPlayingIndex++;
+                    nextSongIndex++;
+                    string songTitle = songQueue.ElementAt(nowPlayingIndex);
+                    Console.WriteLine($"Now playing {songTitle}.");
+                } else if (nowPlayingIndex >= songQueue.Count)
+                {
+                    Console.WriteLine("No more songs to play in playlist.");
+                }
+                else
+                {
+                    Console.WriteLine("No songs in the current playlist.");
+                }
                 break;
             case 5:
                 Environment.Exit(0);
